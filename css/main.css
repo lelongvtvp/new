@@ -1,11 +1,22 @@
+.logofirstpage{
+  width: auto;
+  height: 200px;
+  margin-right:20% ;
+  margin-left: 30%;
+}
 .img {
-margin-left: 50px;
+margin-left: 20%;
 }
 .Contact{
 margin-left: 3.5%;
 }
+.maintt{
+border: 2px solid black;
+padding: 20px;
+color: white;
+}
 body{
-    background-image: url();
+    background-color:white;
 }
 /* css bảng
 /* table, th, td{
@@ -17,19 +28,27 @@ ul {
   margin: 0;
   padding: 0;
   overflow: hidden;
-  background-color: #333333;
 }
 li {
   float: left;
+}
+.bt {
+
+  float: right;
 }
 li a {
   display: block;
   color: white;
   text-align: center;
-  padding: 20px;
+  padding: 10px;
   text-decoration: none;
 }
-
 li a:hover {
-  background-color: #111111;
+  background-color:rgb(11, 107, 107);
+}
+.cpr{
+  text-align: center;
+}
+.tcc{
+background-image: url(./bg1.JPG);
 }
