@@ -16,6 +16,8 @@
 			<div class="summary">
 				<span class="label">Tổng điểm:</span>
 				<span id="sum" class="value">—</span>
+				<span class="label" style="margin-left:16px">Thời gian:</span>
+				<span id="timer" class="value">60s</span>
 			</div>
 		</header>
 
@@ -24,28 +26,64 @@
 			<div class="plate" aria-label="Đĩa">
 				<!-- 3 xúc xắc -->
 				<div id="dice1" class="dice" aria-label="Xúc xắc 1" data-value="1">
-					<div class="face face-1">1</div>
-					<div class="face face-2">2</div>
-					<div class="face face-3">3</div>
-					<div class="face face-4">4</div>
-					<div class="face face-5">5</div>
-					<div class="face face-6">6</div>
+					<div class="face face-1">
+						<span class="pip c"></span>
+					</div>
+					<div class="face face-2">
+						<span class="pip tl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-3">
+						<span class="pip tl"></span><span class="pip c"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-4">
+						<span class="pip tl"></span><span class="pip tr"></span><span class="pip bl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-5">
+						<span class="pip tl"></span><span class="pip tr"></span><span class="pip c"></span><span class="pip bl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-6">
+						<span class="pip tl"></span><span class="pip ml"></span><span class="pip bl"></span><span class="pip tr"></span><span class="pip mr"></span><span class="pip br"></span>
+					</div>
 				</div>
 				<div id="dice2" class="dice" aria-label="Xúc xắc 2" data-value="1">
-					<div class="face face-1">1</div>
-					<div class="face face-2">2</div>
-					<div class="face face-3">3</div>
-					<div class="face face-4">4</div>
-					<div class="face face-5">5</div>
-					<div class="face face-6">6</div>
+					<div class="face face-1">
+						<span class="pip c"></span>
+					</div>
+					<div class="face face-2">
+						<span class="pip tl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-3">
+						<span class="pip tl"></span><span class="pip c"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-4">
+						<span class="pip tl"></span><span class="pip tr"></span><span class="pip bl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-5">
+						<span class="pip tl"></span><span class="pip tr"></span><span class="pip c"></span><span class="pip bl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-6">
+						<span class="pip tl"></span><span class="pip ml"></span><span class="pip bl"></span><span class="pip tr"></span><span class="pip mr"></span><span class="pip br"></span>
+					</div>
 				</div>
 				<div id="dice3" class="dice" aria-label="Xúc xắc 3" data-value="1">
-					<div class="face face-1">1</div>
-					<div class="face face-2">2</div>
-					<div class="face face-3">3</div>
-					<div class="face face-4">4</div>
-					<div class="face face-5">5</div>
-					<div class="face face-6">6</div>
+					<div class="face face-1">
+						<span class="pip c"></span>
+					</div>
+					<div class="face face-2">
+						<span class="pip tl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-3">
+						<span class="pip tl"></span><span class="pip c"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-4">
+						<span class="pip tl"></span><span class="pip tr"></span><span class="pip bl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-5">
+						<span class="pip tl"></span><span class="pip tr"></span><span class="pip c"></span><span class="pip bl"></span><span class="pip br"></span>
+					</div>
+					<div class="face face-6">
+						<span class="pip tl"></span><span class="pip ml"></span><span class="pip bl"></span><span class="pip tr"></span><span class="pip mr"></span><span class="pip br"></span>
+					</div>
 				</div>
 			</div>
 
@@ -56,12 +94,27 @@
 		</main>
 
 		<footer class="controls">
+			<div class="betting" aria-live="polite">
+				<button id="betTai" class="bet-box tai" data-side="tai">
+					<span class="title">Tài</span>
+					<span class="bet-amount" id="betTaiAmt">0</span>
+				</button>
+				<button id="betXiu" class="bet-box xiu" data-side="xiu">
+					<span class="title">Xỉu</span>
+					<span class="bet-amount" id="betXiuAmt">0</span>
+				</button>
+				<div id="betStatus" class="bet-status">Đang mở cược</div>
+			</div>
 			<div class="buttons">
 				<button id="rollBtn" class="btn primary">Tung xúc xắc</button>
 				<button id="resetBtn" class="btn" aria-label="Chơi lại">Chơi lại</button>
 			</div>
 			<div class="result">
 				<span id="resultText">Hãy tung để bắt đầu!</span>
+			</div>
+			<div class="history">
+				<div class="history-title">Lịch sử</div>
+				<div id="historyChart" class="history-chart" aria-label="Lịch sử kết quả"></div>
 			</div>
 		</footer>
 	</div>

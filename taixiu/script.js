@@ -11,8 +11,30 @@ const bowl = document.querySelector('.bowl');
 const toggleBowlBtn = document.getElementById('toggleBowl');
 const plate = document.querySelector('.plate');
 
+// Betting & timer UI
+const betTaiBtn = document.getElementById('betTai');
+const betXiuBtn = document.getElementById('betXiu');
+const betTaiAmtEl = document.getElementById('betTaiAmt');
+const betXiuAmtEl = document.getElementById('betXiuAmt');
+const betStatusEl = document.getElementById('betStatus');
+const timerEl = document.getElementById('timer');
+const historyChartEl = document.getElementById('historyChart');
+
 let isRolling = false;
 let lastTimeoutId = null;
+
+// Betting state
+let bettingOpen = true;
+let totalBetTai = 0;
+let totalBetXiu = 0;
+
+// Round timer state
+let secondsLeft = 60;
+let timerIntervalId = null;
+
+// History state
+const HISTORY_LIMIT = 24;
+const historyResults = []; // 'tai' | 'xiu'
 
 // Audio
 const audioSupport = !!(window.AudioContext || window.webkitAudioContext);
@@ -104,7 +126,6 @@ function rollOnce() {
 	const result = sum >= 11 ? 'Tài' : 'Xỉu';
 	resultText.textContent = `${result} (${sum})`;
 
-	// Sparkles
 	spawnSparkles(10);
 
 	return { values, sum, result };
@@ -122,17 +143,16 @@ function spawnSparkles(count) {
 }
 
 function startRoll() {
-	if (isRolling) return;
+	if (isRolling) return Promise.resolve(null);
 	isRolling = true;
 	document.body.classList.add('rolling');
+	diceElements.forEach(el => el.classList.add('is-rolling'));
+	setBettingOpen(false);
 	playRollSound();
 
-	// Auto open bowl if closed
-	if (bowl.getAttribute('data-state') !== 'open') {
-		setBowlOpen(true);
-	}
+	// Close bowl while rolling
+	setBowlOpen(false);
 
-	// Simulate continuous shake for 1.2s, then settle
 	let tick = 0;
 	const shakeInterval = setInterval(() => {
 		diceElements.forEach(el => {
@@ -143,14 +163,19 @@ function startRoll() {
 		tick += 1;
 	}, 80);
 
-	lastTimeoutId = setTimeout(() => {
-		clearInterval(shakeInterval);
-		const { sum } = rollOnce();
-		// After roll settles
-		isRolling = false;
-		document.body.classList.remove('rolling');
-		playClack();
-	}, 1200);
+	return new Promise(resolve => {
+		lastTimeoutId = setTimeout(() => {
+			clearInterval(shakeInterval);
+			const outcome = rollOnce();
+			isRolling = false;
+			document.body.classList.remove('rolling');
+			diceElements.forEach(el => el.classList.remove('is-rolling'));
+			setBowlOpen(true);
+			playClack();
+			appendHistory(outcome.result);
+			resolve(outcome);
+		}, 1200);
+	});
 }
 
 function resetGame() {
@@ -161,6 +186,9 @@ function resetGame() {
 	sumText.textContent = '—';
 	resultText.textContent = 'Hãy tung để bắt đầu!';
 	setBowlOpen(true);
+	resetBets();
+	resetHistory();
+	startRoundTimer();
 }
 
 function setBowlOpen(open) {
@@ -168,12 +196,92 @@ function setBowlOpen(open) {
 	if (toggleBowlBtn) toggleBowlBtn.setAttribute('aria-pressed', open ? 'false' : 'true');
 }
 
-rollBtn?.addEventListener('click', startRoll);
+function setBettingOpen(open) {
+	bettingOpen = !!open;
+	updateBettingUI();
+}
+
+function updateBettingUI() {
+	if (betTaiBtn) betTaiBtn.disabled = !bettingOpen;
+	if (betXiuBtn) betXiuBtn.disabled = !bettingOpen;
+	if (betStatusEl) {
+		if (secondsLeft <= 15) betStatusEl.textContent = 'Đóng cược';
+		else betStatusEl.textContent = bettingOpen ? 'Đang mở cược' : 'Đóng cược';
+	}
+	if (timerEl) timerEl.textContent = `${Math.max(0, secondsLeft)}s`;
+	if (betTaiAmtEl) betTaiAmtEl.textContent = String(totalBetTai);
+	if (betXiuAmtEl) betXiuAmtEl.textContent = String(totalBetXiu);
+}
+
+function placeBet(side) {
+	if (!bettingOpen) return;
+	if (side === 'tai') totalBetTai += 1;
+	if (side === 'xiu') totalBetXiu += 1;
+	updateBettingUI();
+}
+
+function resetBets() {
+	totalBetTai = 0;
+	totalBetXiu = 0;
+	updateBettingUI();
+}
+
+function appendHistory(resultTextVN) {
+	const side = resultTextVN === 'Tài' ? 'tai' : 'xiu';
+	historyResults.push(side);
+	while (historyResults.length > HISTORY_LIMIT) historyResults.shift();
+	renderHistory();
+}
+
+function resetHistory() {
+	historyResults.length = 0;
+	renderHistory();
+}
+
+function renderHistory() {
+	if (!historyChartEl) return;
+	historyChartEl.innerHTML = '';
+	for (const side of historyResults) {
+		const dot = document.createElement('div');
+		dot.className = `dot ${side}`;
+		dot.title = side === 'tai' ? 'Tài' : 'Xỉu';
+		historyChartEl.appendChild(dot);
+	}
+}
+
+function startRoundTimer() {
+	if (timerIntervalId) clearInterval(timerIntervalId);
+	secondsLeft = 60;
+	setBettingOpen(true);
+	updateBettingUI();
+	timerIntervalId = setInterval(async () => {
+		secondsLeft -= 1;
+		if (secondsLeft <= 15 && bettingOpen) setBettingOpen(false);
+		updateBettingUI();
+		if (secondsLeft <= 0) {
+			clearInterval(timerIntervalId);
+			timerIntervalId = null;
+			await startRoll();
+			resetBets();
+			startRoundTimer();
+		}
+	}, 1000);
+}
+
+rollBtn?.addEventListener('click', async () => {
+	await startRoll();
+	resetBets();
+	startRoundTimer();
+});
 resetBtn?.addEventListener('click', resetGame);
+
 toggleBowlBtn?.addEventListener('click', () => {
 	const isOpen = bowl.getAttribute('data-state') === 'open';
 	setBowlOpen(!isOpen);
 });
+
+betTaiBtn?.addEventListener('click', () => placeBet('tai'));
+betXiuBtn?.addEventListener('click', () => placeBet('xiu'));
 
 // Keyboard shortcuts
 window.addEventListener('keydown', (e) => {
@@ -189,3 +297,6 @@ window.addEventListener('keydown', (e) => {
 applyDiceRotation(diceElements[0], 1);
 applyDiceRotation(diceElements[1], 2);
 applyDiceRotation(diceElements[2], 3);
+renderHistory();
+updateBettingUI();
+startRoundTimer();
