@@ -1,0 +1,71 @@
+<!doctype html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tài Xỉu - Tung 3 Xúc Xắc</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div class="app">
+		<header class="topbar">
+			<h1>Tài Xỉu</h1>
+			<div class="summary">
+				<span class="label">Tổng điểm:</span>
+				<span id="sum" class="value">—</span>
+			</div>
+		</header>
+
+		<main class="table">
+			<!-- Khay đĩa -->
+			<div class="plate" aria-label="Đĩa">
+				<!-- 3 xúc xắc -->
+				<div id="dice1" class="dice" aria-label="Xúc xắc 1" data-value="1">
+					<div class="face face-1">1</div>
+					<div class="face face-2">2</div>
+					<div class="face face-3">3</div>
+					<div class="face face-4">4</div>
+					<div class="face face-5">5</div>
+					<div class="face face-6">6</div>
+				</div>
+				<div id="dice2" class="dice" aria-label="Xúc xắc 2" data-value="1">
+					<div class="face face-1">1</div>
+					<div class="face face-2">2</div>
+					<div class="face face-3">3</div>
+					<div class="face face-4">4</div>
+					<div class="face face-5">5</div>
+					<div class="face face-6">6</div>
+				</div>
+				<div id="dice3" class="dice" aria-label="Xúc xắc 3" data-value="1">
+					<div class="face face-1">1</div>
+					<div class="face face-2">2</div>
+					<div class="face face-3">3</div>
+					<div class="face face-4">4</div>
+					<div class="face face-5">5</div>
+					<div class="face face-6">6</div>
+				</div>
+			</div>
+
+			<!-- Bát úp -->
+			<div class="bowl" aria-label="Bát úp" data-state="open">
+				<button id="toggleBowl" class="btn ghost" aria-pressed="false">Úp/Mở bát</button>
+			</div>
+		</main>
+
+		<footer class="controls">
+			<div class="buttons">
+				<button id="rollBtn" class="btn primary">Tung xúc xắc</button>
+				<button id="resetBtn" class="btn" aria-label="Chơi lại">Chơi lại</button>
+			</div>
+			<div class="result">
+				<span id="resultText">Hãy tung để bắt đầu!</span>
+			</div>
+		</footer>
+	</div>
+
+	<script src="script.js"></script>
+</body>
+</html>
