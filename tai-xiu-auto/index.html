@@ -1,0 +1,72 @@
+<!doctype html>
+<html lang="vi">
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Tài Xỉu Auto</title>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&display=swap" rel="stylesheet">
+	<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+	<div id="app">
+		<header class="topbar">
+			<div class="brand">Thủy Hỏa Linh Thú</div>
+			<div class="session">Phiên: <span id="sessionId">0000000</span></div>
+			<button id="closeBtn" class="icon-btn">✕</button>
+		</header>
+
+		<main class="board">
+			<section class="side side-left">
+				<h2 class="side-title">TÀI</h2>
+				<div class="side-amount" id="amountTai">0</div>
+				<div class="bet-input">
+					<input id="inputTai" type="text" inputmode="numeric" placeholder="0" disabled>
+				</div>
+				<div class="players"><span id="playersTai">0</span> người</div>
+			</section>
+
+			<section class="center">
+				<div class="orb">
+					<div class="countdown" id="countdown">36</div>
+				</div>
+			</section>
+
+			<section class="side side-right">
+				<h2 class="side-title">XỈU</h2>
+				<div class="side-amount" id="amountXiu">0</div>
+				<div class="bet-input">
+					<input id="inputXiu" type="text" inputmode="numeric" placeholder="Đặt cửa" disabled>
+				</div>
+				<div class="players"><span id="playersXiu">0</span> người</div>
+			</section>
+		</main>
+
+		<div class="beads" id="beads"></div>
+
+		<footer class="controls">
+			<div class="chip-row">
+				<button class="chip" data-val="5000">5K</button>
+				<button class="chip" data-val="10000">10K</button>
+				<button class="chip" data-val="50000">50K</button>
+				<button class="chip" data-val="100000">100K</button>
+			</div>
+			<div class="chip-row">
+				<button class="chip" data-val="500000">500K</button>
+				<button class="chip" data-val="1000000">1M</button>
+				<button class="chip" data-val="5000000">5M</button>
+				<button class="chip" data-val="10000000">10M</button>
+			</div>
+			<div class="action-row">
+				<button id="btnCancel" class="btn danger">Hủy</button>
+				<button id="btnAuto" class="btn success">Tất Tay</button>
+				<button id="btnOther" class="btn">Số khác</button>
+				<button id="btnConfirm" class="btn primary">Đồng ý</button>
+			</div>
+		</footer>
+	</div>
+
+	<script src="app.js"></script>
+</body>
+</html>
